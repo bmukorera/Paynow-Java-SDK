@@ -3,7 +3,7 @@
 gradle.properties
 todo.txt
 .mvn
-
+/target
 # Created by https://www.gitignore.io/api/java,gradle
 
 ### Java ###
