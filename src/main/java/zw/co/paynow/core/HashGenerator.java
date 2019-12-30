@@ -13,6 +13,10 @@ import java.util.Map;
  */
 public final class HashGenerator {
 
+    private HashGenerator(){
+
+    }
+
     /**
      * HashGenerator the values in the given Map
      *

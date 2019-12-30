@@ -3,6 +3,7 @@ package zw.co.paynow.parsers;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -10,6 +11,10 @@ import java.util.Map;
  * Decode/encode various parts of the URL
  */
 public class UrlParser {
+
+    private UrlParser(){
+
+    }
 
     /**
      * Url encode the given string
@@ -65,13 +70,13 @@ public class UrlParser {
      * @param qs Query string to parse
      * @return Map of parsed values i.e. key and value
      */
-    public static LinkedHashMap<String, String> parseMapFromQueryString(String qs) {
+    public static HashMap<String, String> parseMapFromQueryString(String qs) {
 
-        LinkedHashMap<String, String> queryPairs = new LinkedHashMap<String, String>();
+        LinkedHashMap<String, String> queryPairs = new LinkedHashMap<>();
         if (qs.length() > 1) {
             String[] pairs = qs.split("&");
             for (String pair : pairs) {
-                int idx = pair.indexOf("=");
+                int idx = pair.indexOf('=');
                 queryPairs.put(UrlParser.urlDecode(pair.substring(0, idx)), UrlParser.urlDecode(pair.substring(idx + 1)));
             }
         }

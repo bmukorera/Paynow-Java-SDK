@@ -1,12 +1,9 @@
 package zw.co.paynow.responses;
 
+import zw.co.paynow.constants.ApplicationConstants;
 import zw.co.paynow.constants.TransactionStatus;
-import zw.co.paynow.constants.TransactionType;
 import zw.co.paynow.exceptions.InvalidIntegrationException;
 
-import java.math.BigDecimal;
-import java.math.MathContext;
-import java.math.RoundingMode;
 import java.util.Map;
 
 /**
@@ -33,31 +30,31 @@ public abstract class InitResponse extends PaynowResponse {
      * @param response Raw response content received from Paynow
      * @throws InvalidIntegrationException Thrown if Paynow reports that user used an invalid integration
      */
-    public InitResponse(Map<String, String> response) throws InvalidIntegrationException {
+    public InitResponse(Map<String, String> response)  {
 
         rawResponseContent = response;
 
-        if (rawResponseContent.containsKey("status")) {
-            requestSuccess = (rawResponseContent.get("status").equalsIgnoreCase(TransactionStatus.OK.getResponseString()));
+        if (rawResponseContent.containsKey(ApplicationConstants.STATUS)) {
+            requestSuccess = (rawResponseContent.get(ApplicationConstants.STATUS).equalsIgnoreCase(TransactionStatus.OK.getResponseString()));
         } else {
             requestSuccess = false;
         }
 
-        if (rawResponseContent.containsKey("status")) {
-            String rawStatus = rawResponseContent.get("status");
+        if (rawResponseContent.containsKey(ApplicationConstants.STATUS)) {
+            String rawStatus = rawResponseContent.get(ApplicationConstants.STATUS);
             status = TransactionStatus.getTransactionStatus(rawStatus);
         } else {
             status = TransactionStatus.UNDEFINED;
         }
 
-        if (rawResponseContent.containsKey("hash")) {
-            hash = rawResponseContent.get("hash");
+        if (rawResponseContent.containsKey(ApplicationConstants.HASH)) {
+            hash = rawResponseContent.get(ApplicationConstants.HASH);
         } else {
             hash = "";
         }
 
-        if (rawResponseContent.containsKey("pollurl")) {
-            pollUrl = rawResponseContent.get("pollurl");
+        if (rawResponseContent.containsKey(ApplicationConstants.POLLURL)) {
+            pollUrl = rawResponseContent.get(ApplicationConstants.POLLURL);
         } else {
             pollUrl = "";
         }
@@ -66,8 +63,8 @@ public abstract class InitResponse extends PaynowResponse {
             return;
         }
 
-        if (rawResponseContent.containsKey("error")) {
-            fail(rawResponseContent.get("error"));
+        if (rawResponseContent.containsKey(ApplicationConstants.ERROR)) {
+            fail(rawResponseContent.get(ApplicationConstants.ERROR));
         }
 
     }

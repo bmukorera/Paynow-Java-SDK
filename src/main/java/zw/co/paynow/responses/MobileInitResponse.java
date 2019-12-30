@@ -1,5 +1,6 @@
 package zw.co.paynow.responses;
 
+import zw.co.paynow.constants.ApplicationConstants;
 import zw.co.paynow.exceptions.InvalidIntegrationException;
 
 import java.util.Map;
@@ -24,17 +25,17 @@ public class MobileInitResponse extends InitResponse {
      * @param response Raw response content received from Paynow
      * @throws InvalidIntegrationException Thrown if Paynow reports that user used an invalid integration
      */
-    public MobileInitResponse(Map<String, String> response) throws InvalidIntegrationException {
+    public MobileInitResponse(Map<String, String> response) {
         super(response);
 
-        if (rawResponseContent.containsKey("instructions")) {
-            instructions = rawResponseContent.get("instructions");
+        if (rawResponseContent.containsKey(ApplicationConstants.INSTRUCTIONS)) {
+            instructions = rawResponseContent.get(ApplicationConstants.INSTRUCTIONS);
         } else {
             instructions = "";
         }
 
-        if (rawResponseContent.containsKey("paynowreference")) {
-            paynowReference = rawResponseContent.get("paynowreference");
+        if (rawResponseContent.containsKey(ApplicationConstants.PAYNOWREFERENCE)) {
+            paynowReference = rawResponseContent.get(ApplicationConstants.PAYNOWREFERENCE);
         } else {
             paynowReference = "";
         }

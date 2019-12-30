@@ -7,7 +7,7 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.HashMap;
+import java.util.Map;
 import java.util.Scanner;
 
 /**
@@ -34,7 +34,7 @@ public class HttpClient {
      * @return The response body from the request
      * @throws IOException Thrown if eception occurs during network communication
      */
-    public String postAsync(String url, HashMap<String, String> data) throws IOException {
+    public String postAsync(String url, Map<String, String> data) throws IOException {
 
         // Define the server endpoint to send the HTTP request to
         URL serverUrl = new URL(url);

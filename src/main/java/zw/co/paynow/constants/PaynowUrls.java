@@ -5,6 +5,10 @@ package zw.co.paynow.constants;
  */
 public final class PaynowUrls {
 
+    private PaynowUrls(){
+
+    }
+
     //URL for initiating a transaction
     public static final String INITIATE_TRANSACTION = "https://www.paynow.co.zw/interface/initiatetransaction";
 

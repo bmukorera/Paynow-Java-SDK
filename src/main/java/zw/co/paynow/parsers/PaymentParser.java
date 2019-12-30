@@ -1,7 +1,6 @@
 package zw.co.paynow.parsers;
 
 import java.math.BigDecimal;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -9,15 +8,17 @@ import java.util.Map;
  */
 public class PaymentParser {
 
-    public static String flattenCollection(HashMap<String, BigDecimal> items) {
-        StringBuilder sb = new StringBuilder();
+    private PaymentParser(){
 
+    }
+
+    public static String flattenCollection(Map<String, BigDecimal> items) {
+        StringBuilder sb = new StringBuilder();
         int i = 1;
         for (Map.Entry<String, BigDecimal> pair : items.entrySet()) {
             sb.append(pair.getKey());
-
             //Don't put comma at last item in cart
-            if (!(i == items.size())) {
+            if ((i != items.size())) {
                 sb.append(", ");
             }
             i++;
@@ -32,7 +33,7 @@ public class PaymentParser {
      * @param items The collection of values
      * @return The total of the items
      */
-    public static BigDecimal addCollectionValues(HashMap<String, BigDecimal> items) {
+    public static BigDecimal addCollectionValues(Map<String, BigDecimal> items) {
         BigDecimal number = BigDecimal.ZERO;
 
         for (Map.Entry<String, BigDecimal> pair : items.entrySet()) {

@@ -1,5 +1,6 @@
 package zw.co.paynow.core;
 
+import zw.co.paynow.constants.ApplicationConstants;
 import zw.co.paynow.constants.MobileMoneyMethod;
 import zw.co.paynow.constants.PaynowUrls;
 import zw.co.paynow.exceptions.ConnectionException;
@@ -16,6 +17,7 @@ import zw.co.paynow.validators.EmailValidator;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Represents a Paynow integration related to a integration ID and key.
@@ -173,9 +175,9 @@ public class Paynow {
      *
      * @param data Hashmap to validate
      */
-    private void verifyHash(HashMap<String, String> data) {
-        if (!data.containsKey("hash") || !HashGenerator.verify(data, integrationKey)) {
-            throw new HashMismatchException(data.get("Error"));
+    private void verifyHash(Map<String, String> data) {
+        if (!data.containsKey(ApplicationConstants.HASH) || !HashGenerator.verify(data, integrationKey)) {
+            throw new HashMismatchException(data.get(ApplicationConstants.ERROR_CAPITALE));
         }
     }
 
@@ -187,7 +189,7 @@ public class Paynow {
      * @throws HashMismatchException Thrown when hashes do not match
      * @throws ConnectionException   Thrown when http request fails to go through
      */
-    public final StatusResponse pollTransaction(String url) throws HashMismatchException, ConnectionException {
+    public final StatusResponse pollTransaction(String url)  {
         try {
             String response = httpHttpClient.postAsync(url, null);
             return parseStatus(response);
@@ -203,8 +205,8 @@ public class Paynow {
      * @return StatusResponse Return response from Paynow
      * @throws HashMismatchException Thrown when hashes do not match
      */
-    protected StatusResponse parseStatus(String response) throws HashMismatchException {
-        HashMap<String, String> data = UrlParser.parseMapFromQueryString(response);
+    protected StatusResponse parseStatus(String response)  {
+        Map<String, String> data = UrlParser.parseMapFromQueryString(response);
         verifyHash( data);
 
         return new StatusResponse(data);
@@ -236,7 +238,7 @@ public class Paynow {
      * @param mMoneyMethod The mobile money method to use
      * @return The response from Paynow
      */
-    private MobileInitResponse initMobileTransaction(Payment payment, String phone, MobileMoneyMethod mMoneyMethod) throws ConnectionException, HashMismatchException {
+    private MobileInitResponse initMobileTransaction(Payment payment, String phone, MobileMoneyMethod mMoneyMethod)  {
         try {
             HashMap<String, String> data = formatInitMobileTransactionRequest(payment, phone, mMoneyMethod);
 
@@ -246,12 +248,12 @@ public class Paynow {
                 throw new IllegalArgumentException("Auth email is required for mobile transactions. Please pass a valid email address to the createPayment method");
             }
 
-            HashMap<String, String> response = UrlParser.parseMapFromQueryString(
+            Map<String, String> response = UrlParser.parseMapFromQueryString(
                     httpHttpClient.postAsync(PaynowUrls.INITIATE_MOBILE_TRANSACTION, data)
             );
 
-            if (!response.get("status").equalsIgnoreCase("error") && (!response.containsKey("hash") || !HashGenerator.verify(response, integrationKey))) {
-                throw new HashMismatchException(response.get("Error"));
+            if (!response.get(ApplicationConstants.STATUS).equalsIgnoreCase(ApplicationConstants.ERROR) && (!response.containsKey(ApplicationConstants.HASH) || !HashGenerator.verify(response, integrationKey))) {
+                throw new HashMismatchException(response.get(ApplicationConstants.ERROR_CAPITALE));
             }
 
             return new MobileInitResponse(response);
@@ -267,16 +269,16 @@ public class Paynow {
      * @param payment The payment to send to Paynow
      * @return The response from Paynow
      */
-    private WebInitResponse initWebTransaction(Payment payment) throws ConnectionException, HashMismatchException {
+    private WebInitResponse initWebTransaction(Payment payment)  {
         try {
             HashMap<String, String> data = formatInitWebTransactionRequest(payment);
 
-            HashMap<String, String> response = UrlParser.parseMapFromQueryString(
+            Map<String, String> response = UrlParser.parseMapFromQueryString(
                     httpHttpClient.postAsync(PaynowUrls.INITIATE_TRANSACTION, data)
             );
 
-            if (!response.get("status").equalsIgnoreCase("error") && (!response.containsKey("hash") || !HashGenerator.verify(response, integrationKey))) {
-                throw new HashMismatchException(response.get("Error"));
+            if (!response.get(ApplicationConstants.STATUS).equalsIgnoreCase(ApplicationConstants.ERROR) && (!response.containsKey(ApplicationConstants.HASH) || !HashGenerator.verify(response, integrationKey))) {
+                throw new HashMismatchException(response.get(ApplicationConstants.ERROR_CAPITALE));
             }
 
             return new WebInitResponse(response);
