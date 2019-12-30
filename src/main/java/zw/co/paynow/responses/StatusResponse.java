@@ -1,5 +1,6 @@
 package zw.co.paynow.responses;
 
+import zw.co.paynow.constants.ApplicationConstants;
 import zw.co.paynow.constants.TransactionStatus;
 import zw.co.paynow.exceptions.InvalidIntegrationException;
 
@@ -42,42 +43,42 @@ public class StatusResponse extends PaynowResponse {
      * @param response Raw response content received from Paynow
      * @throws InvalidIntegrationException Thrown if Paynow reports that user used an invalid integration
      */
-    public StatusResponse(Map<String, String> response) throws InvalidIntegrationException {
+    public StatusResponse(Map<String, String> response)  {
 
         rawResponseContent = response;
 
-        if (!rawResponseContent.containsKey("error")) {
+        if (!rawResponseContent.containsKey(ApplicationConstants.ERROR)) {
             requestSuccess = true;
         } else {
             requestSuccess = false;
         }
 
-        if (rawResponseContent.containsKey("status")) {
-            String rawStatus = rawResponseContent.get("status");
+        if (rawResponseContent.containsKey(ApplicationConstants.STATUS)) {
+            String rawStatus = rawResponseContent.get(ApplicationConstants.STATUS);
             status = TransactionStatus.getTransactionStatus(rawStatus);
 
-            paid = rawResponseContent.get("status").equalsIgnoreCase(TransactionStatus.PAID.getResponseString());
+            paid = rawResponseContent.get(ApplicationConstants.STATUS).equalsIgnoreCase(TransactionStatus.PAID.getResponseString());
         } else {
             paid = false;
 
             status = TransactionStatus.UNDEFINED;
         }
 
-        if (rawResponseContent.containsKey("amount")) {
-            amount = new BigDecimal(rawResponseContent.get("amount"));
+        if (rawResponseContent.containsKey(ApplicationConstants.AMOUNT)) {
+            amount = new BigDecimal(rawResponseContent.get(ApplicationConstants.AMOUNT));
         } else {
             //set a default value of zero
             amount = new BigDecimal(0);
         }
 
-        if (rawResponseContent.containsKey("reference")) {
-            merchantReference = rawResponseContent.get("reference");
+        if (rawResponseContent.containsKey(ApplicationConstants.REFERENCE)) {
+            merchantReference = rawResponseContent.get(ApplicationConstants.REFERENCE);
         } else {
             merchantReference = "";
         }
 
-        if (rawResponseContent.containsKey("paynowreference")) {
-            paynowReference = rawResponseContent.get("paynowreference");
+        if (rawResponseContent.containsKey(ApplicationConstants.PAYNOWREFERENCE)) {
+            paynowReference = rawResponseContent.get(ApplicationConstants.PAYNOWREFERENCE);
         } else {
             paynowReference = "";
         }
@@ -86,8 +87,8 @@ public class StatusResponse extends PaynowResponse {
             return;
         }
 
-        if (rawResponseContent.containsKey("error")) {
-            fail(rawResponseContent.get("error"));
+        if (rawResponseContent.containsKey(ApplicationConstants.ERROR)) {
+            fail(rawResponseContent.get(ApplicationConstants.ERROR));
         }
 
     }
@@ -98,7 +99,7 @@ public class StatusResponse extends PaynowResponse {
      * @return Returns the poll url
      */
     public final String pollUrl() {
-        return rawResponseContent.containsKey("pollurl") ? rawResponseContent.get("pollurl") : "";
+        return rawResponseContent.containsKey(ApplicationConstants.POLLURL) ? rawResponseContent.get(ApplicationConstants.POLLURL) : "";
     }
 
     /**
@@ -107,7 +108,7 @@ public class StatusResponse extends PaynowResponse {
      * @return Returns the hash
      */
     public final String hash() {
-        return rawResponseContent.containsKey("hash") ? rawResponseContent.get("hash") : "";
+        return rawResponseContent.containsKey(ApplicationConstants.HASH) ? rawResponseContent.get(ApplicationConstants.HASH) : "";
     }
 
     //GETTER METHODS
@@ -120,7 +121,7 @@ public class StatusResponse extends PaynowResponse {
     }
 
     public BigDecimal getAmount() {
-        return new BigDecimal(amount.doubleValue()).round(new MathContext(2, RoundingMode.HALF_UP));
+        return BigDecimal.valueOf(amount.doubleValue()).round(new MathContext(2, RoundingMode.HALF_UP));
     }
 
     public boolean paid() {

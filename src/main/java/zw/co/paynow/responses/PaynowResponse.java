@@ -5,6 +5,7 @@ import zw.co.paynow.exceptions.InvalidIntegrationException;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -30,7 +31,7 @@ public abstract class PaynowResponse {
     /**
      * List of errors in the request if any
      */
-    private final ArrayList<String> errors = new ArrayList<String>();
+    private final ArrayList<String> errors = new ArrayList<>();
 
     /**
      * Throws an exception for critical errors and stores other non-critical errors
@@ -86,15 +87,15 @@ public abstract class PaynowResponse {
     }
 
     public Map<String, String> getRawResponseContent() {
-        return new HashMap<String, String>(rawResponseContent);
+        return new HashMap<>(rawResponseContent);
     }
 
     public TransactionStatus getStatus() {
         return status;
     }
 
-    public ArrayList<String> getErrors() {
-        return new ArrayList<String>(errors);
+    public List<String> getErrors() {
+        return new ArrayList<>(errors);
     }
     //END OF GETTER METHODS
 
