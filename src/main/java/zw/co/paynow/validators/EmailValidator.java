@@ -4,6 +4,11 @@ import java.util.regex.Pattern;
 
 public class EmailValidator {
 
+    /*Utility classes should have private constructor*/
+    private EmailValidator(){
+
+    }
+
     /**
      * Validate an email string
      *
