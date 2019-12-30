@@ -19,7 +19,7 @@ public class WebInitResponse extends InitResponse {
      * @param response Raw response content received from Paynow
      * @throws InvalidIntegrationException Thrown if Paynow reports that user used an invalid integration
      */
-    public WebInitResponse(Map<String, String> response) throws InvalidIntegrationException {
+    public WebInitResponse(Map<String, String> response)  {
         super(response);
 
         if (rawResponseContent.containsKey("browserurl")) {
