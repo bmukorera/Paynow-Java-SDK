@@ -7,6 +7,7 @@ buildscript {
     }
 }
 
+
 plugins {
     // Apply the java-library plugin to add support for Java Library
     id 'java-library'
@@ -14,7 +15,17 @@ plugins {
     id 'maven-publish'
 }
 
+apply plugin: 'java'
+compileJava {options.encoding = "UTF-8"}
+compileTestJava {options.encoding = "UTF-8"}
+
+compileJava.options.encoding = 'UTF-8'
+compileTestJava.options.encoding = 'UTF-8'
+javadoc.options.encoding = 'UTF-8'
+
 apply plugin: 'io.codearte.nexus-staging'
+
+
 
 task sourcesJar(type: Jar, dependsOn: classes) {
     classifier = 'sources'
@@ -54,58 +65,60 @@ allprojects {
     apply plugin: 'maven'
 
     // Signature of artifacts
-    signing {
-        sign configurations.archives
-    }
+//    signing {
+//        sign configurations.archives
+//    }
 
     // OSSRH publication
-    uploadArchives {
-        repositories {
-            mavenDeployer {
-                // POM signature
-                beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
-                // Target repository
-                repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
-                    authentication(userName: nexusUsername, password: nexusPassword)
-                }
-                pom.project {
-                    groupId 'zw.co.paynow'
-                    artifactId 'java-sdk'
-                    version '1.1.0'
-                    name 'java-sdk'
-                    description 'This project contains libraries to interface with Zimbabwe\'s Leading Payments Gateway Paynow'
-                    packaging 'jar'
-                    url 'https://github.com/paynow/Paynow-Java-SDK'
-                    inceptionYear '2018'
+//    uploadArchives {
+//        repositories {
+//            mavenDeployer {
+//                // POM signature
+//                beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+//                // Target repository
+//                repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+//                   authentication(userName: nexusUsername, password: nexusPassword)
+//                }
+//                pom.project {
+//                    groupId 'zw.co.paynow'
+//                    artifactId 'java-sdk'
+//                    version '1.1.0'
+//                    name 'java-sdk'
+//                    description 'This project contains libraries to interface with Zimbabwe\'s Leading Payments Gateway Paynow'
+//                    packaging 'jar'
+//                    url 'https://github.com/paynow/Paynow-Java-SDK'
+//                    inceptionYear '2018'
+//
+//                    scm {
+//                        connection 'scm:git:https://github.com/paynow/Paynow-Java-SDK.git'
+//                        developerConnection 'scm:git:git@github.com:paynow/Paynow-Java-SDK.git'
+//                        url 'https://github.com/paynow/Paynow-Java-SDK.git'
+//                    }
+//
+//                    licenses {
+//                        license {
+//                            name 'GNU General Public License v3.0'
+//                            url 'https://www.gnu.org/licenses/gpl.txt'
+//                            distribution 'repo'
+//                        }
+//                    }
+//
+//                    developers {
+//                        developer {
+//                            id = 'paynow'
+//                            name = 'Webdev Projects'
+//                            email = 'projects@webdevworld.com'
+//                        }
+//                    }
+//                }
+//            }
+//        }
+//    }
+//}
 
-                    scm {
-                        connection 'scm:git:https://github.com/paynow/Paynow-Java-SDK.git'
-                        developerConnection 'scm:git:git@github.com:paynow/Paynow-Java-SDK.git'
-                        url 'https://github.com/paynow/Paynow-Java-SDK.git'
-                    }
+//nexusStaging {
+//    username = nexusUsername
+//    password = nexusPassword
+//}
 
-                    licenses {
-                        license {
-                            name 'GNU General Public License v3.0'
-                            url 'https://www.gnu.org/licenses/gpl.txt'
-                            distribution 'repo'
-                        }
-                    }
-
-                    developers {
-                        developer {
-                            id = 'paynow'
-                            name = 'Webdev Projects'
-                            email = 'projects@webdevworld.com'
-                        }
-                    }
-                }
-            }
-        }
-    }
-}
-
-nexusStaging {
-    username = nexusUsername
-    password = nexusPassword
 }

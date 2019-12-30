@@ -8,14 +8,14 @@ import static org.junit.Assert.assertTrue;
 public class EmailValidatorTest {
 
     @Test
-    public void StatusResponseConstructor_ValidEmail_InstantiatedObjectWithCorrectValues() {
+    public void EmailValidatorShouldReturnTrueWhenEmailIsOfValidFormat() {
         String email = "example@example.org";
         boolean result = EmailValidator.validateEmail(email);
         assertTrue(result);
     }
 
     @Test
-    public void StatusResponseConstructor_InvalidEmail_InstantiatedObjectWithCorrectValues() {
+    public void EmailValidatorShouldReturnFalseWhenEmailFormatIsNotValid() {
         String badEmail1 = "example";
         String badEmail2 = "example.org";
         String badEmail3 = "example@org";

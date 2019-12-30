@@ -30,7 +30,7 @@ public abstract class PaynowResponse {
     /**
      * List of errors in the request if any
      */
-    private final ArrayList<String> errors = new ArrayList<>();
+    private final ArrayList<String> errors = new ArrayList<String>();
 
     /**
      * Throws an exception for critical errors and stores other non-critical errors
@@ -86,7 +86,7 @@ public abstract class PaynowResponse {
     }
 
     public Map<String, String> getRawResponseContent() {
-        return new HashMap<>(rawResponseContent);
+        return new HashMap<String, String>(rawResponseContent);
     }
 
     public TransactionStatus getStatus() {
@@ -94,7 +94,7 @@ public abstract class PaynowResponse {
     }
 
     public ArrayList<String> getErrors() {
-        return new ArrayList<>(errors);
+        return new ArrayList<String>(errors);
     }
     //END OF GETTER METHODS
 
